@@ -8,7 +8,7 @@ import { extension_settings, getContext, loadExtensionSettings } from "../../../
 import { saveSettingsDebounced } from "../../../../script.js";
 
 // Keep track of where your extension is located, name should match repo name
-const extensionName = "st-extension-example";
+const extensionName = "st-timestamps";
 const extensionFolderPath = `scripts/extensions/third-party/${extensionName}`;
 const extensionSettings = extension_settings[extensionName];
 const defaultSettings = {};
@@ -61,3 +61,25 @@ jQuery(async () => {
   // Load settings when starting things up (if you have any)
   loadSettings();
 });
+
+globalThis.myCustomInterceptorFunction = async function(chat, contextSize, abort, type) {
+  //Iterate through chat messages and add timestamps
+    for (let i = 0; i < chat.length; i++) {
+        //if there is an existing timestamp, skip. We look for the class .timestamp_display in the message element, so we can add a timestamp if there isn't one, but we don't want to add multiple timestamps if there already is one. This is especially important because this function can be called multiple times for the same messages, and we don't want to keep adding timestamps every time.
+        if (chat[i].element && chat[i].element.querySelector(".timestamp_display")) {
+          continue; // Skip if timestamp already exists
+        }
+        // Get the message and its send date, then format the date as a timestamp string. You can customize the formatting as needed. Here I'm just using toLocaleString for simplicity.
+        const message = chat[i];  
+        const date = new Date(message.send_date);
+        const timestamp = date.toLocaleString(); // You can customize the format as needed
+        // Create a new div element to display the timestamp and add the timestamp_display class for styling
+        const timestampDiv = document.createElement("div");
+        timestampDiv.classList.add("timestamp_display");
+        timestampDiv.textContent = `Sent at: ${timestamp}`;
+        if (chat[i].element) {
+          chat[i].element.appendChild(timestampDiv);
+        }
+      }
+      
+}

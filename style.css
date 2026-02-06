@@ -1,1 +1,63 @@
-/* All style elements for your extension go here */
+:root {
+    --timestamp-default: grey;
+ }
+
+#drawer_content > hr {
+    margin-top: 10px;
+}
+
+.disabled_hint {
+    margin-left: 2px;
+}
+
+/* disabled buttons aren't properly styled by default 
+.settings_input:disabled, #qvink_memory_state_interface *:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* tables for formatting settings 
+.qvink_memory_settings_content table {
+    width: 100%;
+}
+
+/* add a scrollbar to the popout 
+#qmExtensionPopout {
+    overflow: auto;
+}
+
+/* Dropdowns in a line of text 
+select.inline_setting {
+    margin: 0;
+    padding: 0 5px;
+    width: unset !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    height: 1.2em;
+    line-height: 1em;
+}
+/* text input in a line of text 
+input.inline_setting {
+    margin: 0;
+    padding: 0 0 0 5px;
+    width: unset !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    height: 1em;
+}
+
+/* buttons that need to grab your attention (Like the save button when there are unsaved changes) 
+.button_highlight {
+    color: var(--active);
+}
+*/
+/*
+Div displaying the memory on a message.
+By default, text is greyed to indicate that is it not injected.
+*/
+.timestamp_display {
+    margin: 0 0 5px 0;
+    font-size: small;
+    color: var(--timestamp-default);
+}
