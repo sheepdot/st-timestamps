@@ -68,8 +68,12 @@ globalThis.timestamp_interceptor = async function(chat, contextSize, abort, type
   //Iterate through chat messages and add timestamps
     for (let i = 0; i < chat.length; i++) {
         //if there is an existing timestamp, skip. We look for the class .timestamp_display in the message element, so we can add a timestamp if there isn't one, but we don't want to add multiple timestamps if there already is one. This is especially important because this function can be called multiple times for the same messages, and we don't want to keep adding timestamps every time.
-        if (chat[i].mes && chat[i].mes.querySelector(".timestamp_display")) {
-          continue; // Skip if timestamp already exists
+        if (chat[i].mes) {
+          //.mes is just a json property containing the text of the message. Convert to a jQuery object so we can use find() to look for the timestamp_display class. If it exists, we skip adding a new timestamp.
+          const mesElement = $(chat[i].mes);
+          if (mesElement.find(".timestamp_display").length > 0) { 
+           continue; // Skip if timestamp already exists
+          }
         }
         // Get the message and its send date, then format the date as a timestamp string. You can customize the formatting as needed. Here I'm just using toLocaleString for simplicity.
         const message = chat[i];  
@@ -80,7 +84,7 @@ globalThis.timestamp_interceptor = async function(chat, contextSize, abort, type
         timestampDiv.classList.add("timestamp_display");
         timestampDiv.textContent = `Sent at: ${timestamp}`;
         if (chat[i].mes) {
-          chat[i].mes.prependChild(timestampDiv);
+          chat[i].mes = $timestampDiv + chat[i].mes; // Prepend the timestamp to the message content
         }
       }
       
