@@ -60,9 +60,11 @@ jQuery(async () => {
 
   // Load settings when starting things up (if you have any)
   loadSettings();
+  eventSource.on(event_types.GENERATION_STARTED, (type, stuff, dry) => on_chat_event('before_message', {'type': type, 'dry': dry}))
+
 });
 
-globalThis.myCustomInterceptorFunction = async function(chat, contextSize, abort, type) {
+globalThis.timestamp_interceptor = async function(chat, contextSize, abort, type) {
   //Iterate through chat messages and add timestamps
     for (let i = 0; i < chat.length; i++) {
         //if there is an existing timestamp, skip. We look for the class .timestamp_display in the message element, so we can add a timestamp if there isn't one, but we don't want to add multiple timestamps if there already is one. This is especially important because this function can be called multiple times for the same messages, and we don't want to keep adding timestamps every time.
@@ -83,3 +85,26 @@ globalThis.myCustomInterceptorFunction = async function(chat, contextSize, abort
       }
       
 }
+
+// Event handling
+async function on_chat_event(event=null, data=null) {
+    // When the chat is updated, check if the timestamp should be triggered
+    debug("Chat updated:", event, data)
+
+    const context = getContext();
+    let index = data
+
+    switch (event) {
+        case 'user_message':
+//            if (!chat_enabled()) break;  // if chat is disabled, do nothing
+//            if (!get_settings('auto_summarize')) break;  // if auto-summarize is disabled, do nothing
+
+            // add timestamps to user messages if the setting is enabled
+            if (get_settings('include_user_messages')) {
+                debug("New user message detected, summarizing")
+                await auto_summarize_chat();  // auto-summarize the chat (checks for exclusion criteria and whatnot)
+            }
+
+            break;
+      }
+  }

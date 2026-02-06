@@ -1,11 +1,12 @@
 {
-    "display_name": "Name Displayed in SillyTavern",
+    "display_name": "Timestamps",
     "loading_order": 9,
     "requires": [],
     "optional": [],
     "js": "index.js",
     "css": "style.css",
-    "author": "yourNameHere",
+    "author": "Brannon",
     "version": "1.0.0",
-    "homePage": "yourUrlHere"
+    "homePage": "yourUrlHere",
+    "generate_interceptor": "timestamp_interceptor"
 }
